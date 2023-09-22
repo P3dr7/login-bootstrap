@@ -1,4 +1,5 @@
-ID,Email,Password
-1,emailtest@teste.com,1234
-2,emailtest@teste.com,1234asd
-3,emailtest@teste.com,1234fads
+ID, Email, Senha(md5)
+1,pedro@hotmail.com,caf1a3dfb505ffed0d024130f58c5cfa
+2,pedro@hotmail.com,caf1a3dfb505ffed0d024130f58c5cfa
+3,pedro@hotmail.com,a0dc078ca0d99b5ebb465a9f1cad54ba
+
