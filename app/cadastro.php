@@ -3,6 +3,7 @@
 
 $nome = $_POST['e-mail'];
 $senha = md5($_POST['password']);
+$cep = $_POST['CEP'];
 $filename = "../files/arquivo-leitura.csv";
 // Abra o arquivo CSV para leitura e escrita
 $file = fopen($filename, "a+");
@@ -22,7 +23,7 @@ if (flock($file, LOCK_EX)) {
     $lineCount++;
 
     // Crie o novo registro com o ID incrementado e os dados fornecidos
-    $newRecord = [($lineCount-1), $nome, $senha];
+    $newRecord = [($lineCount-1), $nome, $senha, $CEP];
 
     // Escreva o novo registro no arquivo CSV
     fputcsv($file, $newRecord);
@@ -34,7 +35,10 @@ if (flock($file, LOCK_EX)) {
     fclose($file);
 
     echo "O novo registro foi adicionado ao CSV com sucesso.";
+    
 } else {
     echo "Não foi possível bloquear o arquivo para escrita.";
 }
+header('Location: cep.php');
+header("Location: cep.php?message=$cep");
 ?>
