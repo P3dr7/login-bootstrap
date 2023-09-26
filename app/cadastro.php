@@ -1,7 +1,7 @@
 <?php
 
-
-$nome = $_POST['e-mail'];
+$nome = $_POST['nome'];
+$email = $_POST['e-mail'];
 $senha = md5($_POST['password']);
 $cep = $_POST['CEP'];
 $filename = "../files/arquivo-leitura.csv";
@@ -23,7 +23,7 @@ if (flock($file, LOCK_EX)) {
     $lineCount++;
 
     // Crie o novo registro com o ID incrementado e os dados fornecidos
-    $newRecord = [($lineCount-1), $nome, $senha, $CEP];
+    $newRecord = [($lineCount-1), $nome, $email, $senha, $CEP];
 
     // Escreva o novo registro no arquivo CSV
     fputcsv($file, $newRecord);

@@ -1,2 +1,3 @@
-ID,Email,Senha(md5),
-1,pedro2@hotmail.com,202cb962ac59075b964b07152d234b70,
+ID,Nome,Email,Senha(md5),
+1,Pedro,pedro@hotmail.com,827ccb0eea8a706c4c34a16891f84e7b,
+2,Pedro,pedro@hotmail.com,81dc9bdb52d04dc20036dbd8313ed055,
