@@ -1,13 +1,17 @@
 <?php
+//seta cookies
+setcookie('nome',$_POST['nome'], time() + 3600, "/");
+setcookie('password',$_POST['password'], time() + 3600, "/");
+setcookie('e-mail',$_POST['e-mail'], time() + 3600, "/");
 
 $filename = "../files/cep.csv";
-
+$verificaL = false;
 // Verifica se o arquivo já existe
 $fileExists = file_exists($filename);
 
 $file = fopen($filename, "a");
 
-$cep = $_GET['message'];
+$cep = $_POST['CEP'];
 
 // Busca os dados do CEP no serviço viacep
 $endereco = array();
@@ -39,8 +43,11 @@ if (!$fileExists || filesize($filename) == 0) {
 
 // Insere os dados no arquivo CSV
 fputcsv($file, $endereco);
+if(fputcsv($file, $endereco)){;
+$verificaL = true;
+}
 // Fecha o arquivo
 fclose($file);
-header('Location: ../index.html');
-
+header('Location: cadastro.php');
+setcookie("verCep", $verificaL, time() + 3600, "/")
 ?>

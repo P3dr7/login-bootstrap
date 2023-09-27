@@ -16,11 +16,6 @@ if(file_exists($filename)) {
     while ($row = fgetcsv($file)) {
         if (count($headers) == count($row)) {
             $data[] = array_combine($headers, $row); // Combina cabeçalhos e valores
-        } else {
-            // Para depuração: imprime os dados problemáticos
-            echo "Erro na linha: ";
-            print_r($row);
-            echo "<br>";
         }
     }
     fclose($file);
@@ -40,11 +35,10 @@ foreach ($data as $userData) {
 }
 
 if ($userFound) {
-    header("Location: exibir.php?ident=$id");
-    header("Location: exibir.php?email=$emailLogin");
+    setcookie("identi", $id, time() + 3600, "/");  // Define um cookie por 1 hora
+    setcookie("email", $emailLogin, time() + 3600, "/");  // Define um cookie por 1 hora
+    header('Location: ./exibir.php');
 
-} else {
-    echo "Email ou senha inválidos";
 }
 
 ?>
@@ -56,19 +50,17 @@ if ($userFound) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <title>Formulario de Login</title>
+    <title>ERROR</title>
     <link href="style.css" rel="stylesheet">
 </head>
 <body class="d-flex align-items-center py-4 bg-body-tertiary">
-    <main class="w-100 m-auto form-container">  
-    <div class="d-grid gap-2 container-fluid row justify-content-md-center">      
-        <div class="col-md-auto text-center">
-            <h1 class="h3 mb-3 fw-normal">Bem-vindo <?=$nome;?></h1>
-            <p class="gap-1 p-2 border border-primary rounded">Usuário <ins class="text-primary"><?=$id;?></ins> logado com sucesso</p>
-            <p class="gap-1 p-2 border border-primary rounded">Cadastrado com o email:<ins class="text-primary"><br><?=$emailLogin;?></ins></p>
-            <a href="index.html" class="btn btn-outline-danger mt-1 w-100 py-2">Sair</a>
+    <main class="w-100 m-auto form-container align-items-center">  
+        <div class="d-grid gap-2 container-fluid justify-content-md-center">      
+            <div class="text-center">
+                <h1 class="h2 fw-bold border border-3 m-2 p-4 border-danger rounded text-danger w-100">Email ou senha inválidos</h1>
+                <a href="../index.html" class="btn btn-outline-warning mt-1 w-50 py-2">Ir para Login</a>
+            </div>
         </div>
-    </div>
     </main>
 </body>
 </html>

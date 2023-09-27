@@ -1,11 +1,13 @@
 <?php
+//recura os cookies
+$nome = $_COOKIE['nome'];
+$email = $_COOKIE['e-mail'];
+$senha = md5($_COOKIE['password']);
+$verificaL = $_COOKIE['verCep'];
 
-$nome = $_POST['nome'];
-$email = $_POST['e-mail'];
-$senha = md5($_POST['password']);
-$cep = $_POST['CEP'];
 $filename = "../files/arquivo-leitura.csv";
 // Abra o arquivo CSV para leitura e escrita
+if($verificaL){
 $file = fopen($filename, "a+");
 if ($file === false) {
     die("Não foi possível abrir o arquivo.");
@@ -38,7 +40,7 @@ if (flock($file, LOCK_EX)) {
     
 } else {
     echo "Não foi possível bloquear o arquivo para escrita.";
-}
-header('Location: cep.php');
-header("Location: cep.php?message=$cep");
+}}
+header('Location: ../index.html');
+//header("Location: cep.php?message=$cep");
 ?>

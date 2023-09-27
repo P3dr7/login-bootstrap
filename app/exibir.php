@@ -1,155 +1,124 @@
 <?php
-$emailLogin = $_GET['email'];
-//usuairos cadastrados 
+//captura os cookies
+$emailLogin = $_COOKIE['email'];
+$identi = $_COOKIE['identi'];
+// usuários cadastrados
 $filename = "../files/arquivo-leitura.csv";
-if(file_exists($filename)){
-    $file = fopen($filename, "r");
+$userFound = false;
+$nome = "";
+$userId = null; // Variável para armazenar o ID do usuário encontrado
 
+if (file_exists($filename)) {
+    $file = fopen($filename, "r");
     $headers = explode(",", trim(fgets($file))); // Removendo nova linha do cabeçalho
 
     $data = array();
-
-    while($row = fgets($file)){
+    while ($row = fgets($file)) {
         $rowData = explode(",", $row);
         $linha = array();
-        for ($i=0; $i < count($headers); $i++) { 
+        for ($i = 0; $i < count($headers); $i++) {
             $linha[$headers[$i]] = trim($rowData[$i]); // Removendo nova linha dos dados
         }
-
         array_push($data, $linha);
-        print_r($data);
-    }   
+    }
+    fclose($file);
+
     foreach ($data as $userData) {
-        if ($userData['Email'] == $emailLogin /*&& $userData['id'] == $id*/) {
+        if($userData['Email'] == $emailLogin && $userData['ID'] == $identi){
             $nome = $userData['Nome'];
+            $userId = $userData['ID']; // Capturando o ID do usuário encontrado
             $userFound = true;
             break;
         }
+    }
 }
-echo $nome;
-//CEP
+//print_r($userData);
+// CEP
+$enderecoDoUsuario = array(); // Armazena os dados do endereço do usuário
 
 $filenamec = "../files/cep.csv";
-
+$datac = array();
 if (file_exists($filenamec)) {
     $filec = fopen($filenamec, "r");
-
-    // Obtendo os cabeçalhos
-    $headersc = fgetcsv($filec);
-
-    $datac = array();
+    $headersc = fgetcsv($filec); // Obtendo os cabeçalhos
 
     while ($rowDatac = fgetcsv($filec)) {
-        $linhac = array();
-        for ($i = 0; $i < count($headersc); $i++) {
-            // Certificando-se de que existe um valor correspondente no rowDatac
-            if (isset($rowDatac[$i])) {
-                $linhac[$headersc[$i]] = trim($rowDatac[$i]); // Removendo espaços em branco
+        if ($rowDatac[0] == $userId) { // Supondo que o ID do endereço seja a primeira coluna
+            for ($i = 0; $i < count($headersc); $i++) {
+                if (isset($rowDatac[$i])) {
+                    $enderecoDoUsuario[$headersc[$i]] = trim($rowDatac[$i]); // Armazenando os dados do endereço
+                }
             }
-        }
-
-        array_push($datac, $linhac);
-    }
-}
-
-//Verifica os logins 
-$enderecosCorrespondentes = array(); // Array para armazenar endereços correspondentes
-
-if (file_exists($filename) && file_exists($filenamec)) {
-    // Convertendo os dados dos usuários em um array
-    $users = array();
-    while ($row = fgetcsv($file)) {
-        $users[] = $row[0]; // Assumindo que o ID do usuário é a primeira coluna
-    }
-
-    // Verificando os endereços e comparando com os IDs dos usuários
-    while ($rowDatac = fgetcsv($filec)) {
-        $idEndereco = $rowDatac[0]; // Assumindo que o ID do endereço é a primeira coluna
-        if (in_array($idEndereco, $users)) {
-            $enderecosCorrespondentes[] = $rowDatac;
+            break;
         }
     }
-    
-    fclose($file);
-    fclose($filec);
-}
-print_r($enderecosCorrespondentes);
-}
-/*$filenamec = "../files/cep.csv";
-$filenameUsers = "../files/arquivo-leitura.csv"; // Suponho que esse seja o arquivo dos usuários
-
-$enderecosCorrespondentes = array(); // Array para armazenar endereços correspondentes
-
-if (file_exists($filenameUsers) && file_exists($filenamec)) {
-    $fileUsers = fopen($filenameUsers, "r");
-    $filec = fopen($filenamec, "r");
-
-    // Ignorando os cabeçalhos para simplificar (você pode adaptar conforme necessário)
-    $headersUsers = fgetcsv($fileUsers);
-    $headersc = fgetcsv($filec);
-
-    // Convertendo os dados dos usuários em um array
-    $users = array();
-    while ($row = fgetcsv($fileUsers)) {
-        $users[] = $row[0]; // Assumindo que o ID do usuário é a primeira coluna
-    }
-
-    // Verificando os endereços e comparando com os IDs dos usuários
-    while ($rowDatac = fgetcsv($filec)) {
-        $idEndereco = $rowDatac[0]; // Assumindo que o ID do endereço é a primeira coluna
-        if (in_array($idEndereco, $users)) {
-            $enderecosCorrespondentes[] = $rowDatac;
-        }
-    }
-    
-    fclose($fileUsers);
     fclose($filec);
 }
 
-print_r($enderecosCorrespondentes); // Exibindo os endereços correspondentes para verificação
-*/
+//echo $nome;
+//print_r($enderecoDoUsuario); // Exibindo os dados do endereço do usuário
 
 ?>
 
-<!--CEP-->
-<br/>
-<table border="1">
-    <!-- Cabeçalhos da Tabela -->
-    <tr>
-        <?php foreach($headersc as $headerc): ?>
-            <th><?php echo $headerc; ?></th>
-        <?php endforeach; ?>
-    </tr>
-
-    <!-- Dados -->
-    <?php foreach($datac as $rowcep): ?>  
-        <tr>
-            <?php foreach($rowcep as $valuecep): ?>
-                <td><?php echo $valuecep; ?></td>
-            <?php endforeach; ?>
-        </tr>
-    <?php endforeach; ?>
-</table>
-<!--<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <title>Formulario de Login</title>
+    <title>Login Feito</title>
     <link href="style.css" rel="stylesheet">
 </head>
 <body class="d-flex align-items-center py-4 bg-body-tertiary">
-    <main class="w-100 m-auto form-container">  
-    <div class="d-grid gap-2 container-fluid row justify-content-md-center">      
-        <div class="col-md-auto text-center">
-            <h1 class="h3 mb-3 fw-normal">Bem-vindo <?=$nome;?></h1>
-            <p class="gap-1 p-2 border border-primary rounded">Usuário <ins class="text-primary"><?=$nome;?></ins> logado com sucesso</p>
-            <p class="gap-1 p-2 border border-primary rounded">Cadastrado com o email:<ins class="text-primary"><br><?=$emailLogin;?></ins></p>
-            <a href="index.html" class="btn btn-outline-danger mt-1 w-100 py-2">Sair</a>
+    <main class="w-100 m-auto form-container">
+        <!-- Envolver todos os elementos acima do botão -->
+        <div id="elementsAboveButton">
+            <div class="d-grid gap-2 container-fluid row justify-content-md-center">
+                <div class="col-md-auto text-center">
+                    <h1 class="h3 mb-3 fw-normal">Bem-vindo <?=$nome;?></h1>
+                    <p class="gap-1 p-2 border border-primary rounded">Usuário <ins class="text-primary"><?=$nome;?></ins> logado com sucesso</p>
+                    <p class="gap-1 p-2 border border-primary rounded">Cadastrado com o email:<ins class="text-primary"><br><?=$emailLogin;?></ins></p>
+                    <p class="p-2 border border-primary rounded-top border-bottom-0">Sua Localidade:</p>
+                    <table class="table table-bordered border-primary">
+                        <thead>
+                            <tr>
+                                <th scope="col">CEP</th>
+                                <th scope="col">Logradouro</th>
+                                <th scope="col">Bairro</th>
+                                <th scope="col">Localidade</th>
+                                <th scope="col">UF</th>
+                                <th scope="col">IBGE</th>
+                                <th scope="col">DDD</th>
+                                <th scope="col">Siafi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><?=$enderecoDoUsuario['cep'];?></td>
+                                <td><?=$enderecoDoUsuario['logradouro'];?></td>
+                                <td><?=$enderecoDoUsuario['bairro'];?></td>
+                                <td><?=$enderecoDoUsuario['localidade'];?></td>
+                                <td><?=$enderecoDoUsuario['uf'];?></td>
+                                <td><?=$enderecoDoUsuario['ibge'];?></td>
+                                <td><?=$enderecoDoUsuario['ddd'];?></td>
+                                <td><?=$enderecoDoUsuario['siafi'];?></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-    </div>
+        <a href="../index.html" class="d-flex btn btn-outline-danger justify-content-center align-items-center" id="dynamicButton">Sair</a>
     </main>
-    </body>
-</html>-->
+<script>
+    window.onload = function() {
+    const elementsAbove = document.getElementById('elementsAboveButton');
+    const button = document.getElementById('dynamicButton');
+    button.style.width = elementsAbove.offsetHeight + 'px';
+};
+</script>
+
+</body>
+
+</html>
