@@ -19,19 +19,28 @@ $response = curl_exec($ch);
 curl_close($ch);
 $endereco = json_decode($response, true);
 
-// Remove a chave 'gia' e 'Complemento' do array como ele e nulo
+// Remove a chave 'gia' e 'Complemento' do array, pois eles são nulos
 unset($endereco['gia']);
 unset($endereco['complemento']);
 
+// Se o array $endereco tiver apenas 1 elemento, exibe um aviso e encerra a execução
+if (count($endereco) == 1) {
+    die("Ocorreu um erro ao buscar os dados do CEP.");
+}
 // Se o arquivo não existir ou estiver vazio, escreve os cabeçalhos
 if (!$fileExists || filesize($filename) == 0) {
-    fputcsv($file, array_keys($endereco));
+    fputcsv($file, array_merge(array('ID'), array_keys($endereco)));
+    $endereco = array_merge(array(1), $endereco);
+} else {
+    // Determina o próximo ID contando o número de linhas no arquivo
+    $currentLines = count(file($filename));
+    $endereco = array_merge(array($currentLines), $endereco);
 }
 
 // Insere os dados no arquivo CSV
 fputcsv($file, $endereco);
-
 // Fecha o arquivo
 fclose($file);
-header('Location: exibir.php');
+header('Location: ../index.html');
+
 ?>

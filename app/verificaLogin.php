@@ -32,17 +32,20 @@ $userFound = false;
 //roda os dados da tabela como array comparando cada campo
 foreach ($data as $userData) {
     if ($userData['Email'] == $emailLogin && $userData['Senha(md5)'] == md5($senhaLogin)) {
+        $id = $userData['ID'];
         $nome = $userData['Nome'];
         $userFound = true;
         break;
     }
 }
 
-/*if ($userFound) {
-    echo $nome . "<br>" . $emailLogin;
+if ($userFound) {
+    header("Location: exibir.php?ident=$id");
+    header("Location: exibir.php?email=$emailLogin");
+
 } else {
     echo "Email ou senha inválidos";
-}*/
+}
 
 ?>
 <br>
@@ -58,14 +61,14 @@ foreach ($data as $userData) {
 </head>
 <body class="d-flex align-items-center py-4 bg-body-tertiary">
     <main class="w-100 m-auto form-container">  
-        <div class="d-grid gap-2 ">      
-            <h1 class="h3 d-flex mb-3 fw-normal justify-content-center align-items-center">Bem-vindo <?=$nome;?></h1>
-            <p class="d-flex gap-1 p-2 border border-primary rounded justify-content-center m-auto">Usuário <ins class="text-primary"><?=$nome;?></ins> logado com sucesso</p>
-            <p class="d-flex gap-1 p-2 border border-primary rounded justify-content-center m-auto">Cadastrado com o email:<ins class="text-primary"><?=$emailLogin;?></ins></p>
-            <div class="d-flex justify-content-center align-items-center">
-                <a href="index.html" class="btn btn-outline-danger mt-3 w-50">Sair</a>
-            </div>
+    <div class="d-grid gap-2 container-fluid row justify-content-md-center">      
+        <div class="col-md-auto text-center">
+            <h1 class="h3 mb-3 fw-normal">Bem-vindo <?=$nome;?></h1>
+            <p class="gap-1 p-2 border border-primary rounded">Usuário <ins class="text-primary"><?=$id;?></ins> logado com sucesso</p>
+            <p class="gap-1 p-2 border border-primary rounded">Cadastrado com o email:<ins class="text-primary"><br><?=$emailLogin;?></ins></p>
+            <a href="index.html" class="btn btn-outline-danger mt-1 w-100 py-2">Sair</a>
         </div>
+    </div>
     </main>
 </body>
 </html>
