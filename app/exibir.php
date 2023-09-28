@@ -71,53 +71,48 @@ if (file_exists($filenamec)) {
     <link href="style.css" rel="stylesheet">
 </head>
 <body class="d-flex align-items-center py-4 bg-body-tertiary">
-    <main class="w-100 m-auto form-container">
-        <!-- Envolver todos os elementos acima do botão -->
-        <div id="elementsAboveButton">
-            <div class="d-grid gap-2 container-fluid row justify-content-md-center">
-                <div class="col-md-auto text-center">
-                    <h1 class="h3 mb-3 fw-normal">Bem-vindo <?=$nome;?></h1>
-                    <p class="gap-1 p-2 border border-primary rounded">Usuário <ins class="text-primary"><?=$nome;?></ins> logado com sucesso</p>
-                    <p class="gap-1 p-2 border border-primary rounded">Cadastrado com o email:<ins class="text-primary"><br><?=$emailLogin;?></ins></p>
-                    <p class="p-2 border border-primary rounded-top border-bottom-0">Sua Localidade:</p>
-                    <table class="table table-bordered border-primary">
-                        <thead>
-                            <tr>
-                                <th scope="col">CEP</th>
-                                <th scope="col">Logradouro</th>
-                                <th scope="col">Bairro</th>
-                                <th scope="col">Localidade</th>
-                                <th scope="col">UF</th>
-                                <th scope="col">IBGE</th>
-                                <th scope="col">DDD</th>
-                                <th scope="col">Siafi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><?=$enderecoDoUsuario['cep'];?></td>
-                                <td><?=$enderecoDoUsuario['logradouro'];?></td>
-                                <td><?=$enderecoDoUsuario['bairro'];?></td>
-                                <td><?=$enderecoDoUsuario['localidade'];?></td>
-                                <td><?=$enderecoDoUsuario['uf'];?></td>
-                                <td><?=$enderecoDoUsuario['ibge'];?></td>
-                                <td><?=$enderecoDoUsuario['ddd'];?></td>
-                                <td><?=$enderecoDoUsuario['siafi'];?></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+<main class="w-100 m-auto form-container" style="display: grid; height: 100vh; align-content: center;">
+    <!-- Envolver todos os elementos acima do botão -->
+    <div class=""d-flex justify-content-center>
+        <div class="d-grid container-fluid row justify-content-md-center">
+            <div class="col-md-auto text-center">
+                <h1 class="h3 mb-3 fw-normal">Bem-vindo <?=$nome;?></h1>
+                <p class="gap-1 p-2 border border-primary rounded">Usuário <ins class="text-primary"><?=$nome;?></ins> logado com sucesso</p>
+                <p class="gap-1 p-2 border border-primary rounded">Cadastrado com o email:<ins class="text-primary"><br><?=$emailLogin;?></ins></p>
+                <p class="p-2 border border-primary rounded-top border-bottom-0" style="margin-bottom: 0 !important;">Sua Localidade:</p>
+                <table class="table table-bordered border-primary" style="margin-top: 0 !important;">
+                    <thead>
+                        <tr>
+                            <th scope="col">CEP</th>
+                            <th scope="col">Logradouro</th>
+                            <th scope="col">Bairro</th>
+                            <th scope="col">Localidade</th>
+                            <th scope="col">UF</th>
+                            <th scope="col">IBGE</th>
+                            <th scope="col">DDD</th>
+                            <th scope="col">Siafi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><?=$enderecoDoUsuario['cep'];?></td>
+                            <td><?=$enderecoDoUsuario['logradouro'];?></td>
+                            <td><?=$enderecoDoUsuario['bairro'];?></td>
+                            <td><?=$enderecoDoUsuario['localidade'];?></td>
+                            <td><?=$enderecoDoUsuario['uf'];?></td>
+                            <td><?=$enderecoDoUsuario['ibge'];?></td>
+                            <td><?=$enderecoDoUsuario['ddd'];?></td>
+                            <td><?=$enderecoDoUsuario['siafi'];?></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a href="../index.html" class="d-flex btn btn-outline-danger justify-content-center align-items-center" id="dynamicButton">Sair</a>
             </div>
-        </div>
-        <a href="../index.html" class="d-flex btn btn-outline-danger justify-content-center align-items-center" id="dynamicButton">Sair</a>
-    </main>
-<script>
-    window.onload = function() {
-    const elementsAbove = document.getElementById('elementsAboveButton');
-    const button = document.getElementById('dynamicButton');
-    button.style.width = elementsAbove.offsetHeight + 'px';
-};
-</script>
+        </div>  
+    </div>  
+</main>
+
+
 
 </body>
 
